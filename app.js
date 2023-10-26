@@ -13,6 +13,8 @@ class User {
     // 여기서 null은 '존재(자리)하지만 값이 없는' 상태를 의미
     // 에러를 내지 않고 null을 대입해서 무분별한 에러를 방지
 
+    // ? this vaildataEmail ? 여기서 this가 쓰이는 것이 좀 이해가 어렵네
+    // ? 여기서 이메일은 왜 언더바가 들어갈까?
     if(this.validataEmail(email)){
       this._email = email;
     }else {
@@ -29,6 +31,36 @@ class User {
   get email() {
     return this._email;
   }
+  // 유효한지 검사하는 함수 처리
+  set email(newEmail){
+    if(this.validataEmail(newEmail)){
+      this._email = newEmail;
+    }else {
+      console.error('유효한 이메일 형식이 아닙니다.')
+    }
+  }
+  // setter 함수를 적절히 사용하기 위해 아래의 메서드를 제작
+  // return 이 boolean 값이므로, false를 반환을 통해 constructor에서 null을 대입하는 것을 방지한다.
+  validataEmail(email) {
+    // !typeof에 소괄호를 무시해도 작동하는구나?
+    if(typeof email !== 'string'){
+      return false;
+    }
+    // * 포함하지 않거나 포함하지 않으면 false
+    if(!email.includes('@') || !email.includes('.')){
+      return false;
+    }
+    //true를 반환 영역
+    return true;
+  }
 
-
+  // 아래는 간단한 프로필을 출력하는 메서드이다.
+  // * class 안에 메서드 넣기도 가능하다.
+  showProfile(){
+    console.log(`Username : ${this.username}, Email : ${this._email}`);
+  }
 }
+
+//예제 호출
+const userYoon = new User('wnsgus', "Yoonjieut@gmail.com");
+userYoon.showProfile();
